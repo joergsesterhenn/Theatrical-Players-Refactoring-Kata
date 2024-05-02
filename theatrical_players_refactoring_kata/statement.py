@@ -8,35 +8,40 @@ def statement(invoice, plays):
     entries = ""
     for perf in invoice['performances']:
         play = plays[perf['playID']]
-        if play['type'] == "tragedy":
-            this_amount = 40000
-            if perf['audience'] > 30:
-                this_amount += 1000 * (perf['audience'] - 30)
-        elif play['type'] == "comedy":
-            this_amount = 30000
-            if perf['audience'] > 20:
-                this_amount += 10000 + 500 * (perf['audience'] - 20)
+        play_type = play['type']
+        audience = perf['audience']
 
-            this_amount += 300 * perf['audience']
-
-        else:
-            raise ValueError(f'unknown type: {play["type"]}')
-
-        volume_credits += calculate_performance_volume_credits(
-            perf['audience'], play["type"])
+        this_amount = calculate_amount(audience, play_type)
+        volume_credits += calculate_volume_credits(audience, play_type)
 
         # print line for this order
-        amount = this_amount/100
-        entries += f' {play["name"]}: {f"${amount :0,.2f}"} ({perf["audience"]} seats)\n'
+        entries += f' {play["name"]}: {f"${this_amount / 100 :0,.2f}"} ({audience} seats)\n'
         total_amount += this_amount
 
-    amount1 = total_amount/100
-    owed = f'Amount owed is {f"${amount1 :0,.2f}"}\n'
+    owed_amount = total_amount/100
+    owed = f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
     earned = f'You earned {volume_credits} credits\n'
     return header + entries + owed + earned
 
 
-def calculate_performance_volume_credits(perf_audience, play_type):
+def calculate_amount(audience, play_type):
+    if play_type == "tragedy":
+        this_amount = 40000
+        if audience > 30:
+            this_amount += 1000 * (audience - 30)
+    elif play_type == "comedy":
+        this_amount = 30000
+        if audience > 20:
+            this_amount += 10000 + 500 * (audience - 20)
+
+        this_amount += 300 * audience
+
+    else:
+        raise ValueError(f'unknown type: {play_type}')
+    return this_amount
+
+
+def calculate_volume_credits(perf_audience, play_type):
     # add volume credits
     audience_volume_credits = max(perf_audience - 30, 0)
     # add extra credit for every ten comedy attendees
