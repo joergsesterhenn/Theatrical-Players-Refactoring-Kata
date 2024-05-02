@@ -1,16 +1,18 @@
 import json
 
 import pytest
-from approvaltests import verify
 from approval_utilities.utils import get_adjacent_file
-from theatrical_players_refactoring_kata import statement
+from approvaltests import verify
+from theatrical_players_refactoring_kata.statement import statement
+
 
 def test_example_statement():
     with open(get_adjacent_file("invoice.json")) as f:
         invoice = json.loads(f.read())
     with open(get_adjacent_file("plays.json")) as f:
         plays = json.loads(f.read())
-    verify(statement(invoice, plays))
+    result = statement(invoice, plays)
+    verify(result)
 
 
 def test_statement_with_new_play_types():
