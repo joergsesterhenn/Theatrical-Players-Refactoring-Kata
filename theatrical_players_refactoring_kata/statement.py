@@ -4,8 +4,8 @@ import math
 def statement(invoice, plays):
     total_amount = 0
     volume_credits = 0
-    result = f'Statement for {invoice["customer"]}\n'
-
+    header = f'Statement for {invoice["customer"]}\n'
+    entries = ""
     for perf in invoice['performances']:
         play = plays[perf['playID']]
         if play['type'] == "tragedy":
@@ -29,12 +29,12 @@ def statement(invoice, plays):
             volume_credits += math.floor(perf['audience'] / 5)
         # print line for this order
         amount = this_amount/100
-        result += f' {play["name"]}: {f"${amount :0,.2f}"} ({perf["audience"]} seats)\n'
+        entries += f' {play["name"]}: {f"${amount :0,.2f}"} ({perf["audience"]} seats)\n'
         total_amount += this_amount
 
     amount1 = total_amount/100
-    result += f'Amount owed is {f"${amount1 :0,.2f}"}\n'
-    result += f'You earned {volume_credits} credits\n'
-    return result
+    owed = f'Amount owed is {f"${amount1 :0,.2f}"}\n'
+    earned = f'You earned {volume_credits} credits\n'
+    return header + entries + owed + earned
 
 
