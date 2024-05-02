@@ -32,7 +32,6 @@ class ComedyPlay(Play):
         this_amount = 30000
         if audience > 20:
             this_amount += 10000 + 500 * (audience - 20)
-
         this_amount += 300 * audience
         return this_amount
 
@@ -49,11 +48,9 @@ class TragedyPlay(Play):
         this_amount = 40000
         if audience > 30:
             this_amount += 1000 * (audience - 30)
-
         return this_amount
 
     def calculate_credits(self, audience):
         # add volume credits
         audience_volume_credits = max(audience - 30, 0)
-        # add extra credit for every ten comedy attendees
         return audience_volume_credits
