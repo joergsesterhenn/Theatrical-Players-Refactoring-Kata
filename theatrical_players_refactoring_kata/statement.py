@@ -7,18 +7,14 @@ def statement(invoice, plays):
     entries = ""
     for perf in invoice['performances']:
         play = plays[perf['playID']]
-        play_type = play['type']
-        audience = perf['audience']
-
-        amount = calculate_amount(audience, play_type)
-        volume_credits += calculate_volume_credits(audience, play_type)
-
-        # print line for this order
-        entries += format_entry(amount, audience, play)
+        amount = calculate_amount(perf['audience'], play['type'])
+        volume_credits += calculate_volume_credits(perf['audience'],
+                                                   play['type'])
+        entries += format_entry(amount, perf['audience'], play["name"])
         total_amount += amount
 
     owed_amount = total_amount/100
-    
+
     return format_header(invoice) + entries + format_owed(
         owed_amount) + format_credits(volume_credits)
 
@@ -38,8 +34,8 @@ def format_header(invoice):
     return header
 
 
-def format_entry(amount, audience, play):
-    entry = f' {play["name"]}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
+def format_entry(amount, audience, play_name):
+    entry = f' {play_name}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
     return entry
 
 
