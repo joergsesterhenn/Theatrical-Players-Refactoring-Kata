@@ -4,24 +4,43 @@ import math
 def statement(invoice, plays):
     total_amount = 0
     volume_credits = 0
-    header = f'Statement for {invoice["customer"]}\n'
     entries = ""
     for perf in invoice['performances']:
         play = plays[perf['playID']]
         play_type = play['type']
         audience = perf['audience']
 
-        this_amount = calculate_amount(audience, play_type)
+        amount = calculate_amount(audience, play_type)
         volume_credits += calculate_volume_credits(audience, play_type)
 
         # print line for this order
-        entries += f' {play["name"]}: {f"${this_amount / 100 :0,.2f}"} ({audience} seats)\n'
-        total_amount += this_amount
+        entries += format_entry(amount, audience, play)
+        total_amount += amount
 
     owed_amount = total_amount/100
-    owed = f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
+    
+    return format_header(invoice) + entries + format_owed(
+        owed_amount) + format_credits(volume_credits)
+
+
+def format_credits(volume_credits):
     earned = f'You earned {volume_credits} credits\n'
-    return header + entries + owed + earned
+    return earned
+
+
+def format_owed(owed_amount):
+    owed = f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
+    return owed
+
+
+def format_header(invoice):
+    header = f'Statement for {invoice["customer"]}\n'
+    return header
+
+
+def format_entry(amount, audience, play):
+    entry = f' {play["name"]}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
+    return entry
 
 
 def calculate_amount(audience, play_type):
