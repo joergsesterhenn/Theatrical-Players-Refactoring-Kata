@@ -6,9 +6,6 @@ def statement(invoice, plays):
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
 
-    def format_as_dollars(amount):
-        return f"${amount:0,.2f}"
-
     for perf in invoice['performances']:
         play = plays[perf['playID']]
         if play['type'] == "tragedy":
@@ -31,10 +28,12 @@ def statement(invoice, plays):
         if "comedy" == play["type"]:
             volume_credits += math.floor(perf['audience'] / 5)
         # print line for this order
-        result += f' {play["name"]}: {format_as_dollars(this_amount/100)} ({perf["audience"]} seats)\n'
+        amount = this_amount/100
+        result += f' {play["name"]}: {f"${amount :0,.2f}"} ({perf["audience"]} seats)\n'
         total_amount += this_amount
 
-    result += f'Amount owed is {format_as_dollars(total_amount/100)}\n'
+    amount1 = total_amount/100
+    result += f'Amount owed is {f"${amount1 :0,.2f}"}\n'
     result += f'You earned {volume_credits} credits\n'
     return result
 
