@@ -63,8 +63,4 @@ def calculate_volume_credits(perf_audience, play_type):
     comedy_volume_credits = 0
     if "comedy" == play_type:
         comedy_volume_credits = math.floor(perf_audience / 5)
-    performance_volume_credits = (
-            audience_volume_credits + comedy_volume_credits)
-    return performance_volume_credits
-
-
+    return audience_volume_credits + comedy_volume_credits
