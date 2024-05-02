@@ -13,10 +13,8 @@ def statement(invoice, plays):
         entries += format_entry(amount, perf['audience'], play["name"])
         total_amount += amount
 
-    owed_amount = total_amount/100
-
     return format_header(invoice) + entries + format_owed(
-        owed_amount) + format_credits(volume_credits)
+        total_amount / 100) + format_credits(volume_credits)
 
 
 def format_credits(volume_credits):
