@@ -20,23 +20,19 @@ def statement(invoice, plays):
 
 
 def format_credits(volume_credits):
-    earned = f'You earned {volume_credits} credits\n'
-    return earned
+    return f'You earned {volume_credits} credits\n'
 
 
 def format_owed(owed_amount):
-    owed = f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
-    return owed
+    return f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
 
 
 def format_header(invoice):
-    header = f'Statement for {invoice["customer"]}\n'
-    return header
+    return f'Statement for {invoice["customer"]}\n'
 
 
 def format_entry(amount, audience, play_name):
-    entry = f' {play_name}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
-    return entry
+    return f' {play_name}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
 
 
 def calculate_amount(audience, play_type):
