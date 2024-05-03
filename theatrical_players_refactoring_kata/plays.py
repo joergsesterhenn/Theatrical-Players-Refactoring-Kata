@@ -22,6 +22,10 @@ class Play(metaclass=ABCMeta):
             return ComedyPlay(play_type, play_name)
         elif "tragedy" == play_type:
             return TragedyPlay(play_type, play_name)
+        elif "history" == play_type:
+            return HistoryPlay(play_type, play_name)
+        elif "pastoral" == play_type:
+            return PastoralPlay(play_type, play_name)
         else:
             raise ValueError(f'unknown type: {play_type}')
 
@@ -44,6 +48,32 @@ class ComedyPlay(Play):
 
 
 class TragedyPlay(Play):
+    def calculate_amount(self, audience):
+        this_amount = 40000
+        if audience > 30:
+            this_amount += 1000 * (audience - 30)
+        return this_amount
+
+    def calculate_credits(self, audience):
+        # add volume credits
+        audience_volume_credits = max(audience - 30, 0)
+        return audience_volume_credits
+
+
+class PastoralPlay(Play):
+    def calculate_amount(self, audience):
+        this_amount = 40000
+        if audience > 30:
+            this_amount += 1000 * (audience - 30)
+        return this_amount
+
+    def calculate_credits(self, audience):
+        # add volume credits
+        audience_volume_credits = max(audience - 30, 0)
+        return audience_volume_credits
+
+
+class HistoryPlay(Play):
     def calculate_amount(self, audience):
         this_amount = 40000
         if audience > 30:
