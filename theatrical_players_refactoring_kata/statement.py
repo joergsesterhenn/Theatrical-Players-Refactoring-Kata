@@ -1,36 +1,40 @@
-import math
-
-from theatrical_players_refactoring_kata.plays import Play
+from theatrical_players_refactoring_kata.plays import PlayCalculator
 
 
 def statement(invoice, plays):
-    total_amount = 0
-    volume_credits = 0
-    entries = ""
+    entries = calculate_statement_entries(invoice, plays)
+    total_amount = sum([entry.get("amount") for entry in entries])
+    volume_credits = sum([entry.get("credits") for entry in entries])
+    return format_statement(entries, invoice, total_amount, volume_credits)
+
+
+def calculate_statement_entries(invoice, plays):
+    entries = []
     for perf in invoice['performances']:
         play_entry = plays[perf['playID']]
-        play = Play.of(play_entry['type'], play_entry['name'])
-        amount = play.calculate_amount(perf['audience'])
-        volume_credits += play.calculate_credits(perf['audience'])
-        entries += format_entry(amount, perf['audience'], play_entry["name"])
-        total_amount += amount
+        play_calculator = PlayCalculator.of(play_entry['type'],
+                                            play_entry['name'])
+        amount = play_calculator.calculate_amount(perf['audience'])/100
+        volume_credits = play_calculator.calculate_credits(perf['audience'])
 
-    return format_header(invoice) + entries + format_owed(
-        total_amount / 100) + format_credits(volume_credits)
-
-
-def format_credits(volume_credits):
-    return f'You earned {volume_credits} credits\n'
+        entries.append({'amount': amount, 'audience': perf['audience'],
+                        'name': play_entry["name"], 'credits': volume_credits})
+    return entries
 
 
-def format_owed(owed_amount):
-    return f'Amount owed is {f"${owed_amount :0,.2f}"}\n'
+def format_statement(entries, invoice, amount, volume_credits):
+    return (f'Statement for {invoice["customer"]}\n'
+            + format_entries(entries)
+            + f'Amount owed is {f"${amount :0,.2f}"}\n'
+            + f'You earned {volume_credits} credits\n')
 
 
-def format_header(invoice):
-    return f'Statement for {invoice["customer"]}\n'
+def format_entries(entries):
+    return "".join(
+        [f' {entry.get("name")}: {f"${entry.get("amount") :0,.2f}"} ({
+         entry.get("audience")} seats)\n' for entry in entries]
+    )
 
 
-def format_entry(amount, audience, play_name):
-    return f' {play_name}: {f"${amount / 100 :0,.2f}"} ({audience} seats)\n'
+
 

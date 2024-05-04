@@ -3,7 +3,7 @@ from typing import Self
 from abc import ABCMeta, abstractmethod
 
 
-class Play(metaclass=ABCMeta):
+class PlayCalculator(metaclass=ABCMeta):
     def __init__(self, play_type, play_name):
         self.play_type = play_type
         self.play_name = play_name
@@ -19,25 +19,24 @@ class Play(metaclass=ABCMeta):
     @classmethod
     def of(cls, play_type, play_name) -> Self:
         if "comedy" == play_type:
-            return ComedyPlay(play_type, play_name)
+            return ComedyPlayCalculator(play_type, play_name)
         elif "tragedy" == play_type:
-            return TragedyPlay(play_type, play_name)
+            return TragedyPlayCalculator(play_type, play_name)
         elif "history" == play_type:
-            return HistoryPlay(play_type, play_name)
+            return HistoryPlayCalculator(play_type, play_name)
         elif "pastoral" == play_type:
-            return PastoralPlay(play_type, play_name)
+            return PastoralPlayCalculator(play_type, play_name)
         else:
             raise ValueError(f'unknown type: {play_type}')
 
 
-class ComedyPlay(Play):
+class ComedyPlayCalculator(PlayCalculator):
 
     def calculate_amount(self, audience):
         this_amount = 30000
         if audience > 20:
             this_amount += 10000 + 500 * (audience - 20)
-        this_amount += 300 * audience
-        return this_amount
+        return this_amount + 300 * audience
 
     def calculate_credits(self, audience):
         # add volume credits
@@ -47,7 +46,7 @@ class ComedyPlay(Play):
         return audience_volume_credits + comedy_volume_credits
 
 
-class TragedyPlay(Play):
+class TragedyPlayCalculator(PlayCalculator):
     def calculate_amount(self, audience):
         this_amount = 40000
         if audience > 30:
@@ -60,7 +59,7 @@ class TragedyPlay(Play):
         return audience_volume_credits
 
 
-class PastoralPlay(Play):
+class PastoralPlayCalculator(PlayCalculator):
     def calculate_amount(self, audience):
         this_amount = 40000
         if audience > 30:
@@ -73,7 +72,7 @@ class PastoralPlay(Play):
         return audience_volume_credits
 
 
-class HistoryPlay(Play):
+class HistoryPlayCalculator(PlayCalculator):
     def calculate_amount(self, audience):
         this_amount = 40000
         if audience > 30:
