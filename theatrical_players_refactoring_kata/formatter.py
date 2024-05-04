@@ -1,13 +1,21 @@
-def format_statement(entries, invoice, amount, volume_credits,
-                     statement_type="printout"):
+def format_statement(entries: [], customer: str, amount: int,
+                     volume_credits: int, statement_type="printout"):
+    """
+    :param entries: List of entry dicts
+    :param customer: Name of the customer
+    :param amount: Total amount owed
+    :param volume_credits: Volume credit for invoice
+    :param statement_type: how to render the statement (html/printout)
+    :return: statement rendered according to type
+    """
     if statement_type == "printout":
-        return (f'Statement for {invoice["customer"]}\n'
+        return (f'Statement for {customer}\n'
                 + format_printout_entries(entries)
                 + f'Amount owed is {f"${amount :0,.2f}"}\n'
                 + f'You earned {volume_credits} credits\n')
     elif statement_type == "html":
         return (f'<!DOCTYPE html>\n<html>\n<body>\n<h1>Statement for {
-                invoice["customer"]}</h1>\n'
+                customer}</h1>\n'
                 + format_html_entries(entries)
                 + f'<p>Amount owed is {f"${amount :0,.2f}"}</p>\n'
                 + f'<p>You earned {volume_credits
