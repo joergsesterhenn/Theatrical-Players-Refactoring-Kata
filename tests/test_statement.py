@@ -20,8 +20,14 @@ def test_statement_with_new_play_types():
         invoice = json.loads(f.read())
     with open(get_adjacent_file("new_plays.json")) as f:
         plays = json.loads(f.read())
-    #with pytest.raises(ValueError) as exception_info:
-    #    statement(invoice, plays)
-    #assert "unknown type" in str(exception_info.value)
     result = statement(invoice, plays)
+    verify(result)
+
+
+def test_statement_with_new_play_types_and_html():
+    with open(get_adjacent_file("invoice_new_plays.json")) as f:
+        invoice = json.loads(f.read())
+    with open(get_adjacent_file("new_plays.json")) as f:
+        plays = json.loads(f.read())
+    result = statement(invoice, plays, "html")
     verify(result)

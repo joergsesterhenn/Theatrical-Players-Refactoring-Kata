@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Statement for BigCoII</h1>
+<p style="margin-left: 20px;">Henry V: $630.00 (53 seats)</p>
+<p style="margin-left: 20px;">As You Like It: $650.00 (55 seats)</p>
+<p>Amount owed is $1,280.00</p>
+<p>You earned 48 credits</p>
+</body>
+</html>
