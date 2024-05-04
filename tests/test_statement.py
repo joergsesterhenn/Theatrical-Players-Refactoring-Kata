@@ -1,6 +1,5 @@
 import json
 
-import pytest
 from approval_utilities.utils import get_adjacent_file
 from approvaltests import verify
 from theatrical_players_refactoring_kata.statement import statement
