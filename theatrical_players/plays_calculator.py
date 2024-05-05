@@ -4,9 +4,8 @@ from abc import ABCMeta, abstractmethod
 
 
 class PlayCalculator(metaclass=ABCMeta):
-    def __init__(self, play_type, play_name):
+    def __init__(self, play_type):
         self.play_type = play_type
-        self.play_name = play_name
 
     @abstractmethod
     def calculate_amount(self, audience):
@@ -17,15 +16,15 @@ class PlayCalculator(metaclass=ABCMeta):
         pass
 
     @classmethod
-    def of(cls, play_type, play_name) -> Self:
+    def of(cls, play_type) -> Self:
         if "comedy" == play_type:
-            return ComedyPlayCalculator(play_type, play_name)
+            return ComedyPlayCalculator(play_type)
         elif "tragedy" == play_type:
-            return TragedyPlayCalculator(play_type, play_name)
+            return TragedyPlayCalculator(play_type)
         elif "history" == play_type:
-            return HistoryPlayCalculator(play_type, play_name)
+            return HistoryPlayCalculator(play_type)
         elif "pastoral" == play_type:
-            return PastoralPlayCalculator(play_type, play_name)
+            return PastoralPlayCalculator(play_type)
         else:
             raise ValueError(f'unknown type: {play_type}')
 

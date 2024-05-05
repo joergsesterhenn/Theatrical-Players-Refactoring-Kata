@@ -31,8 +31,7 @@ def calculate_statement_entries(performances, plays):
     entries = []
     for performance in performances:
         play = plays[performance['playID']]
-        play_calculator = PlayCalculator.of(play['type'],
-                                            play['name'])
+        play_calculator = PlayCalculator.of(play['type'])
         amount = play_calculator.calculate_amount(performance['audience'])/100
         volume_credits = (
             play_calculator.calculate_credits(performance['audience']))
