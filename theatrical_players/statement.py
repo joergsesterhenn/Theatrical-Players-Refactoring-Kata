@@ -1,24 +1,24 @@
-from theatrical_players_refactoring_kata.formatter import format_statement
-from theatrical_players_refactoring_kata.plays_calculator import PlayCalculator
+from theatrical_players.statement_formatter import StatementFormatter
+from theatrical_players.plays_calculator import PlayCalculator
 
 
-def statement(invoice, plays, statement_type="printout"):
+def statement(invoice, plays, statement_type="plain_text"):
     """
     Formats a statement for an invoice depending on  statement_type.
     :param invoice: invoice data
     :param plays: list of plays
     :param statement_type: format in which to render
-           the statement (html, printout)
+           the statement (html, plain_text)
     :return: formated statement
     """
     entries = calculate_statement_entries(invoice['performances'], plays)
     total_amount = sum([entry.get("amount") for entry in entries])
     volume_credits = sum([entry.get("credits") for entry in entries])
-    return format_statement(entries,
-                            invoice["customer"],
+    return StatementFormatter.of(statement_type).format_statement(
                             total_amount,
-                            volume_credits,
-                            statement_type)
+                            invoice["customer"],
+                            entries,
+                            volume_credits)
 
 
 def calculate_statement_entries(performances, plays):
