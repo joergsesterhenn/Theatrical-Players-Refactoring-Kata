@@ -2,9 +2,11 @@ import math
 from typing import Self
 from abc import ABCMeta, abstractmethod
 
+from theatrical_players.models.Play import PlayTypeEnum
+
 
 class PlayCalculator(metaclass=ABCMeta):
-    def __init__(self, play_type):
+    def __init__(self, play_type: PlayTypeEnum):
         self.play_type = play_type
 
     @abstractmethod
